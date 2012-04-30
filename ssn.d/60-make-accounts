@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+#  Legt die Admin-Accounts an
+#
+#
+
+techvorstand="004477,005444"
+
+prefix=$1
+admins=$techvorstand,$2
+
+#
+#  Source our common functions - this will let us install a Debian package.
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+IFS=","
+for user in ${admins}; do
+	if [ -f "/etc/xen-tools/admin.d/${user}.key" -a -f "/etc/xen-tools/admin.d/${user}.pw" -a -f "/etc/xen-tools/admin.d/${user}.name" -a -f "/etc/xen-tools/admin.d/${user}.mail" ]; then
+		logMessage Script adding a${user}a...
+		chroot ${prefix} adduser --disabled-login --gecos "`cat /etc/xen-tools/admin.d/${user}.name`" a${user}a
+		chroot ${prefix} adduser a${user}a sudo
+		mkdir -m 700 ${prefix}/home/a${user}a/.ssh
+		install -m 644 /etc/xen-tools/admin.d/${user}.key ${prefix}/home/a${user}a/.ssh/authorized_keys
+		chroot ${prefix} chown -R a${user}a:a${user}a /home/a${user}a/.ssh
+		chroot ${prefix} usermod -p "`cat /etc/xen-tools/admin.d/${user}.pw`" a${user}a
+
+		if [ -s "/etc/xen-tools/admin.d/${user}.mail" ]; then
+		mail=`cat /etc/xen-tools/admin.d/${user}.mail`
+		/usr/sbin/cfagent -f - <<-EOF
+		control:
+		   any::
+		   actionsequence = ( editfiles )
+		   EditFileSize = ( 30000 )
+
+		editfiles:
+		   any::
+		        { ${prefix}/etc/aliases
+			  Backup "false"
+			  LocateLineMatching "^root:.*$"
+         		  AppendToLineIfNotContains ", ${mail}"
+			}
+		EOF
+		logMessage Scrip: user a${user}a mail addy ${mail} added to /etc/aliases...
+		fi
+
+
+
+
+	else
+		logMessage Script ERROR: user a${user}a not found...
+	fi
+done
+#
+#  Log our finish
+#
+logMessage Script $0 finished

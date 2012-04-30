@@ -1,0 +1,77 @@
+#!/bin/sh
+#
+#  Passt die /etc/ssh/sshd_conf an
+#
+#
+
+prefix=$1
+
+#
+#  Source our common functions - this will let us install a Debian package.
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+
+#
+#  Install sshd
+#
+installDebianPackage ${prefix} openssh-server
+
+#cp /etc/ssh/sshd_config /tmp/sshd_config
+
+/usr/sbin/cfagent -f - <<EOF
+control:
+   any::
+   actionsequence = ( editfiles )
+   EditFileSize = ( 30000 )
+
+editfiles:
+   any::
+        { ${prefix}/etc/ssh/sshd_config
+	  Backup "false"
+          HashCommentLinesMatching "^PasswordAuthentication.*$"
+          LocateLineMatching "^#* *PasswordAuthentication.*$"
+          InsertLine "PasswordAuthentication no"
+
+	  ResetSearch '1'
+
+	  HashCommentLinesMatching "^PermitRootLogin.*$"
+          LocateLineMatching "^#* *PermitRootLogin.*$"
+          InsertLine "PermitRootLogin no"
+
+          HashCommentLinesMatching ".*dsa_key$"
+          HashCommentLinesMatching "^KeyRegenerationInterval.*$"
+          HashCommentLinesMatching "^ServerKeyBits.*$"
+          HashCommentLinesMatching "^RSAAuthentication.*$"
+
+	  ResetSearch '1'
+
+	  HashCommentLinesMatching "^X11Forwarding.*$"
+          HashCommentLinesMatching "^X11DisplayOffset.*$"
+          LocateLineMatching "^#* *X11Forwarding.*$"
+          InsertLine "X11Forwarding no"
+
+          IncrementPointer "-2"
+          InsertLine "AllowAgentForwarding no"
+          InsertLine "AllowTcpForwarding no"
+          InsertLine ""
+        }
+EOF
+
+
+#
+#  Log our finish
+#
+logMessage Script $0 finished
+

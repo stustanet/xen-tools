@@ -1,0 +1,104 @@
+#!/bin/bash
+#
+
+prefix=$1
+
+# source common functions
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+logMessage Installing firewall "($0)..."
+
+logMessage Preseeding debcinf for iptables-persistent
+
+# set debconf selections for iptables-persistent
+logMessage Configuring exim...
+chroot ${prefix} /usr/bin/debconf-set-selections <<EOF
+iptables-persistent	iptables-persistent/autosave_v6	boolean	false
+iptables-persistent	iptables-persistent/autosave_v4	boolean	false
+EOF
+
+logMessage Installing packages...
+
+installDebianPackage ${prefix} iptables lsb-base
+disableStartStopDaemon ${prefix}
+chroot ${prefix} /bin/sh -c '/usr/bin/dpkg -i /root/iptables-persistent_*.deb'
+enableStartStopDaemon ${prefix}
+
+logMessage Installing rules...
+
+if ! [ -d ${prefix}/etc/iptables ] ; then mkdir ${prefix}/etc/iptables; fi
+
+cat > ${prefix}/etc/iptables/rules.v4 <<EOF
+*filter
+:INPUT DROP
+:FORWARD DROP
+:OUTPUT ACCEPT
+
+# allow localhost
+-A INPUT -i lo -j ACCEPT
+
+# allow ssh, icmp and fragments
+-A INPUT -p tcp -m tcp --dport 22 -s 10.150.0.0/17 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -s 141.84.69.0/24 -j ACCEPT
+-A INPUT -p icmp -m icmp -j ACCEPT
+-A INPUT -f -j ACCEPT
+
+# allow ISATAP
+-A INPUT -p ipv6 -s 10.150.0.0/17 -j ACCEPT
+-A INPUT -p ipv6 -s 141.84.69.0/24 -j ACCEPT
+
+# allow DNS
+-A INPUT -p udp -s 10.150.127.2 --sport 53 -j ACCEPT
+-A INPUT -p udp -s 10.150.125.2 --sport 53 -j ACCEPT
+
+# allow NTP
+-A INPUT -p udp -s 10.150.127.2 --sport 123 --dport 123 -j ACCEPT
+-A INPUT -p udp -s 10.150.125.2 --sport 123 --dport 123 -j ACCEPT
+
+# allow tcp responses
+-A INPUT -p tcp ! --syn -j ACCEPT
+
+# allow services
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+COMMIT
+EOF
+
+cat > ${prefix}/etc/iptables/rules.v6 <<EOF
+*filter
+:INPUT DROP
+:FORWARD DROP
+:OUTPUT ACCEPT
+
+# allow localhost
+-A INPUT -i lo -j ACCEPT
+
+# allow ssh and icmp
+-A INPUT -p tcp -m tcp --dport 22 -s 2001:4ca0:200::/48 -j ACCEPT
+-A INPUT -p ipv6-icmp -j ACCEPT
+
+# allow DNS
+-A INPUT -p udp -s 2001:4ca0:200:3:200:5efe:8d54:4502 --sport 53 -j ACCEPT
+-A INPUT -p udp -s 2001:4ca0:200:3:200:5efe:8d54:451d --sport 53 -j ACCEPT
+
+# allow NTP
+-A INPUT -p udp -s 2001:4ca0:200:3:200:5efe:8d54:4502 --sport 123 --dport 123 -j ACCEPT
+-A INPUT -p udp -s 2001:4ca0:200:3:200:5efe:8d54:451d --sport 123 --dport 123 -j ACCEPT
+
+# allow tcp responses
+-A INPUT -p tcp ! --syn -j ACCEPT
+
+# allow services
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+COMMIT
+EOF
+
+
+logMessage Done installing firewall $0 ...

@@ -1,0 +1,26 @@
+#! /bin/bash
+
+prefix=$1
+
+chroot ${prefix} cp /etc/skel/.bash_logout /root/
+
+/usr/sbin/cfagent -f - <<EOF
+
+control:
+   any::
+   actionsequence = ( editfiles )
+   EditFileSize = ( 30000 )
+
+editfiles:
+   any::
+        { ${prefix}/root/.bashrc
+          Backup "false"
+          UnCommentLinesContaining "export LS_OPTIONS='--color=auto'"
+          UnCommentLinesContaining "eval \"\`dircolors\`\""
+          UnCommentLinesContaining "alias ls='ls \$LS_OPTIONS'"
+          UnCommentLinesContaining "alias ll='ls \$LS_OPTIONS -l'"
+          UnCommentLinesContaining "alias l='ls \$LS_OPTIONS -lA'"
+        }
+
+EOF
+

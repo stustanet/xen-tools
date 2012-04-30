@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# Install grub for pygrub
+
+# source common functions
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem in $0"
+fi
+
+prefix=$1
+
+logMessage "Starting $0"
+
+cat > ${prefix}/boot/grub/menu.lst <<EOF
+default         0
+timeout         2
+
+title           Debian GNU/Linux
+root            (hd0,0)
+kernel          /vmlinuz root=/dev/xvda2 ro 
+initrd          /initrd.img
+
+title           Debian GNU/Linux (recovery mode)
+root            (hd0,0)
+kernel          /vmlinuz root=/dev/xvda2 ro single
+initrd          /initrd.img
+EOF
+
+logMessage "Done installing grub by $0"

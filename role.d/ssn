@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Run all ssn tasks
+
+prefix=$1
+admins=$2
+
+# if verbose is not empty, logging is on
+verbose="knoedelbrot"
+export verbose
+
+# source functions
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+logMessage Running StuStaNet scripts...
+
+run-parts --verbose --report --arg="${prefix}" --arg="${admins}" /etc/xen-tools/ssn.d
+#for exe in /etc/xen-tools/ssn.d/*; do
+#	echo -------------------------------------------------------------------------
+#	echo Starting $exe...
+#	${exe} "${prefix}" "${admins}"
+#	echo $exe exited with code $?.
+#done
+
+logMessage StuStaNet script complete

@@ -1,0 +1,60 @@
+#!/bin/bash
+
+prefix=$1
+
+# source common functions
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem in $0"
+fi
+
+
+logMessage "Configuring the packages..."
+
+chroot ${prefix} /usr/bin/debconf-set-selections <<EOF
+apt-listchanges apt-listchanges/frontend        select  mail
+apt-listchanges apt-listchanges/confirm boolean false
+apt-listchanges apt-listchanges/which   select  both
+apt-listchanges apt-listchanges/email-address   string  root
+unattended-upgrades     unattended-upgrades/enable_auto_updates boolean true
+# Should apt-listchanges skip changes that have already been seen?
+apt-listchanges apt-listchanges/save-seen       boolean true
+EOF
+
+
+logMessage "Installing unattended upgrades stuff..."
+
+installDebianPackage ${prefix} unattended-upgrades apt-listchanges
+
+
+logMessage "Activating sendmail for unattended upgrades:"
+
+#/etc/apt/apt.conf.d/50unattended-upgrades
+#
+#
+###
+#
+#//Unattended-Upgrade::Mail "root@localhost";
+#>>
+#Unattended-Upgrade::Mail "root";
+
+/usr/sbin/cfagent -f - <<EOF
+control:
+	any::
+	actionsequence = ( editfiles )
+	EditFileSize = ( 30000 )
+
+
+editfiles:
+	any::
+		{
+			${prefix}/etc/apt/apt.conf.d/50unattended-upgrades
+			Backup "false"
+			LocateLineMatching "\s*//\s*Unattended-Upgrade::Mail.*"
+			InsertLine "Unattended-Upgrade::Mail \"root\";"
+		}
+EOF
+
+
+logMessage "$0 finished."

@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+
+prefix=$1
+
+# source common functions
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+# install ntp
+logMessage Installing ntp...
+installDebianPackage ${prefix} ntp
+
+
+/usr/sbin/cfagent -f - <<EOF
+
+control:
+   any::
+   actionsequence = ( editfiles )
+   EditFileSize = ( 30000 )
+
+editfiles:
+   any::
+        { ${prefix}/etc/ntp.conf
+	  Backup "false"
+          HashCommentLinesMatching "^server.*"
+          LocateLineMatching "^# ?server .*"
+          InsertLine "server 10.150.127.2 iburst"
+          InsertLine "server 10.150.125.2 iburst"
+        }
+EOF
+
+
+logMessage ntp done...
+
