@@ -36,7 +36,7 @@ exim4-config    exim4/mailname  string  ${hostname}.stusta.mhn.de
 exim4-config    exim4/dc_readhost       string  ${hostname}.stusta.mhn.de
 #exim4   exim4/drec      error   
 #exim4-base      exim4-base/drec error   
-exim4-config    exim4/use_split_config  boolean false
+exim4-config    exim4/use_split_config  boolean true
 exim4-config    exim4/dc_localdelivery  select  mbox format in /var/mail/
 exim4-config    exim4/dc_local_interfaces       string  127.0.0.1 ; ::1
 exim4-config    exim4/dc_minimaldns     boolean false
@@ -78,6 +78,8 @@ dc_mailname_in_oh='true'
 dc_localdelivery='mail_spool'
 EOF
 
+# set SSN-rewrite rules
+echo *@${hostname}.stusta.mhn.de no-reply@mail.stusta.mhn.de Frs > /etc/exim4/conf.d/rewrite/99_ssn_no-reply_rewriting
 
 # reconfigure exim
 logMessage Reconfiguring exim...
