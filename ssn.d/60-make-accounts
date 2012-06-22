@@ -4,10 +4,11 @@
 #
 #
 
-techvorstand="005444,006589"
+techvorstand1=005444
+techvorstand2=006589
 
 prefix=$1
-admins=$techvorstand,$2
+admins=${techvorstand1},${techvorstand2},$2
 
 #
 #  Source our common functions - this will let us install a Debian package.
@@ -36,7 +37,7 @@ for user in ${admins}; do
 		chroot ${prefix} chown -R a${user}a:a${user}a /home/a${user}a/.ssh
 		chroot ${prefix} usermod -p "`cat /etc/xen-tools/admin.d/${user}.pw`" a${user}a
 
-		if [ -s "/etc/xen-tools/admin.d/${user}.mail" ]; then
+		if [ -s "/etc/xen-tools/admin.d/${user}.mail" -a ${user} != ${techvorstand1} -a ${user} != ${techvorstand2} ]; then
 		mail=`cat /etc/xen-tools/admin.d/${user}.mail`
 		/usr/sbin/cfagent -f - <<-EOF
 		control:
