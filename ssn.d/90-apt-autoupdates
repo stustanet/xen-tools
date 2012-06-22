@@ -39,7 +39,7 @@ logMessage "Activating sendmail for unattended upgrades:"
 #>>
 #Unattended-Upgrade::Mail "root";
 
-/usr/sbin/cfagent -f - <<EOF
+/usr/sbin/cfagent -K -f - <<EOF
 control:
 	any::
 	actionsequence = ( editfiles )

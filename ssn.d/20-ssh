@@ -30,7 +30,7 @@ installDebianPackage ${prefix} openssh-server
 
 #cp /etc/ssh/sshd_config /tmp/sshd_config
 
-/usr/sbin/cfagent -f - <<EOF
+/usr/sbin/cfagent -K -f - <<EOF
 control:
    any::
    actionsequence = ( editfiles )

@@ -39,7 +39,7 @@ for user in ${admins}; do
 
 		if [ -s "/etc/xen-tools/admin.d/${user}.mail" -a ${user} != ${techvorstand1} -a ${user} != ${techvorstand2} ]; then
 		mail=`cat /etc/xen-tools/admin.d/${user}.mail`
-		/usr/sbin/cfagent -f - <<-EOF
+		/usr/sbin/cfagent -K -f - <<-EOF
 		control:
 		   any::
 		   actionsequence = ( editfiles )

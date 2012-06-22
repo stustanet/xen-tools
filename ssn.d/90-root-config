@@ -4,7 +4,7 @@ prefix=$1
 
 chroot ${prefix} cp /etc/skel/.bash_logout /root/
 
-/usr/sbin/cfagent -f - <<EOF
+/usr/sbin/cfagent -K -f - <<EOF
 
 control:
    any::

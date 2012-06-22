@@ -15,7 +15,7 @@ logMessage Installing ntp...
 installDebianPackage ${prefix} ntp
 
 
-/usr/sbin/cfagent -f - <<EOF
+/usr/sbin/cfagent -K -f - <<EOF
 
 control:
    any::

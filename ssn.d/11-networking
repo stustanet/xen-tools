@@ -20,7 +20,7 @@ EOF
 
 chroot ${prefix} /usr/bin/aptitude -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" --without-recommends install psutils vlan isatapd
 
-/usr/sbin/cfagent -f - <<EOF
+/usr/sbin/cfagent -K -f - <<EOF
 control:
    any::
    actionsequence = ( editfiles )
