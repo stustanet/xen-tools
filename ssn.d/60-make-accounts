@@ -4,7 +4,7 @@
 #
 #
 
-techvorstand="004477,005444"
+techvorstand="005444,006589"
 
 prefix=$1
 admins=$techvorstand,$2
