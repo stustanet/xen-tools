@@ -60,8 +60,8 @@ iface eth0 inet static
 	down killall isatapd || true
 
 
-auto eth0.9
-iface eth0.9 inet6 static
+auto eth1
+iface eth1 inet6 static
 	address 2001:4ca0:200:3:0:5efe:${ip1}
 	netmask 120
 	up ip -6 route add to 2001:4ca0:200:3:200:5efe:141.84.69.0/120 dev \${IFACE} || true
@@ -81,8 +81,8 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-auto eth0.5
-iface eth0.5 inet static
+auto eth0
+iface eth0 inet static
 	address ${ip1}
 	netmask 255.255.255.0
 	gateway 141.84.69.254
@@ -93,8 +93,8 @@ iface eth0.5 inet static
 	down killall isatapd || true
 
 
-auto eth0.9
-iface eth0.9 inet6 static
+auto eth1
+iface eth1 inet6 static
 	address 2001:4ca0:200:3:200:5efe:${ip1}
 	netmask 120
 	up ip -6 route add to 2001:4ca0:200:3:200:5efe:141.84.69.0/120 dev \${IFACE} || true
