@@ -141,17 +141,17 @@ name        = '{$hostname}'
     $br6 = ",bridge=$bridge6"
   }
 
-  $OUT .= "vif         = [\n
+  $OUT .= "vif         = [\n";
   $OUT .= "                'ip=$ip1";
   $OUT .= "$m";
   $OUT .= "$vn";
   $OUT .= "$br";
-  $OUT .= "'\n
-  $OUT .= "                $cfg_v6\n
+  $OUT .= "'\n";
+  $OUT .= "                $cfg_v6\n";
   $OUT .= "                'ip=$ip6";
   $OUT .= "$m6";
   $OUT .= "$br6";
-  $OUT .= "'\n
+  $OUT .= "'\n";
   $OUT .= "              ]";
 }
 
