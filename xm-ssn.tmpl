@@ -96,63 +96,65 @@ name        = '{$hostname}'
 #
 #  Networking
 #
-{ if ( $dhcp )
+{
+  #
+  # Setup the mac address, if present.
+  #
+  my $m = '';
+  if ( $mac4 )
   {
-    $OUT .= "dhcp        = 'dhcp'\n";
+    $m = ",mac=$mac4"
+  }
 
-    # Setup the mac address, if present.
-    my $m = '';
-    if ( $mac )
+  my $m6 = '';
+  if ( $mac6 )
+  {
+    $m6 = ",mac=$mac6"
+  }
+
+  my $vn = '';
+  if ( $vifname )
+  {
+    $vn = ",vifname=$vifname";
+  }
+
+  my $br = '';
+  if ( $ip1 =~ ^141\.84\.69\..*$ )
+  {
+    if ( $bridge_ext4 )
     {
-      $m = "mac=$mac"
+      $br = ",bridge=$bridge_ext4"
     }
-    my $br = '';
-    if ( $bridge )
-    {
-      if ( $mac )
-      {
-        $br = ",bridge=$bridge"
-      }
-      else
-      {
-        $br = "bridge=$bridge"
-      }
-    }
-    $OUT .= "vif         = [ '";
-    $OUT .= "$m";
-    $OUT .= "$br";
-    $OUT .= "' ]";
+    $ip6 = "$ipv6_prefix_ext:$ip1"
   }
   else
   {
-    #
-    # Setup the mac address, if present.
-    #
-    my $m = '';
-    if ( $mac )
+    if ( $bridge_int4 )
     {
-      $m = ",mac=$mac"
+      $br = ",bridge=$bridge_int4"
     }
-
-    my $vn = '';
-    if ( $vifname )
-    {
-      $vn = ",vifname=$vifname";
-    }
-
-    my $br = '';
-    if ( $bridge )
-    {
-      $br = ",bridge=$bridge"
-    }
-
-    $OUT .= "vif         = [ 'ip=$ip1";
-    $OUT .= "$m";
-    $OUT .= "$vn";
-    $OUT .= "$br";
-    $OUT .= "' ]";
+    $ip6 = "$ipv6_prefix_int:$ip1"
   }
+  my $br6 = '';
+  if ( $bridge6 )
+  {
+    $br6 = ",bridge=$bridge6"
+  }
+
+  $OUT .= "vif         = [\n
+  $OUT .= "                'ip=$ip1";
+  $OUT .= "$m";
+  $OUT .= "$vn";
+  $OUT .= "$br";
+  $OUT .= "'\n
+  $OUT .= "                $cfg_v6\n
+  $OUT .= "                'ip=$ip6";
+  $OUT .= "$m6";
+  $OUT .= "$br6";
+  $OUT .= "'\n
+  $OUT .= "              ]";
 }
+
 
 #
 #  Behaviour
