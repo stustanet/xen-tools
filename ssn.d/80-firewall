@@ -23,9 +23,8 @@ EOF
 
 logMessage Installing packages...
 
-installDebianPackage ${prefix} iptables lsb-base
 disableStartStopDaemon ${prefix}
-chroot ${prefix} /bin/sh -c '/usr/bin/dpkg -i /root/iptables-persistent_*.deb'
+installDebianPackage ${prefix} iptables lsb-base iptables-persistent
 enableStartStopDaemon ${prefix}
 
 logMessage Installing rules...
@@ -44,7 +43,7 @@ cat > ${prefix}/etc/iptables/rules.v4 <<EOF
 # allow ssh, icmp and fragments
 -A INPUT -p tcp -m tcp --dport 22 -s 10.150.0.0/17 -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 22 -s 141.84.69.0/24 -j ACCEPT
--A INPUT -p icmp -m icmp -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
 -A INPUT -f -j ACCEPT
 
 # allow ISATAP
