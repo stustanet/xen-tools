@@ -1,0 +1,23 @@
+#!/bin/bash
+
+prefix=$1
+
+# source common functions
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem in $0"
+fi
+
+logMessage Script $0 starting
+logMessage "${0}: Setting up /etc/environment"
+
+
+cat > ${prefix}/etc/environment <<EOF
+http_proxy="http://proxy.stusta.mhn.de:3128"
+https_proxy="http://proxy.stusta.mhn.de:3128"
+ftp_proxy="http://proxy.stusta.mhn.de:3128"
+no_proxy=".stusta.mhn.de"
+EOF
+
+logMessage "$0 finished setting mirrors "

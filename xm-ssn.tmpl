@@ -35,6 +35,7 @@
   }
 }
 vcpus       = '{$vcpus}'
+cpus        = '1-23'
 memory      = '{$memory}'
 
 #
@@ -146,8 +147,7 @@ name        = '{$hostname}'
   $OUT .= "$m";
   $OUT .= "$vn";
   $OUT .= "$br";
-  $OUT .= "'\n";
-  $OUT .= "                $cfg_v6\n";
+  $OUT .= "',\n";
   $OUT .= "                'ip=$ip6";
   $OUT .= "$m6";
   $OUT .= "$br6";

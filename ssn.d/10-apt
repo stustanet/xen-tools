@@ -26,6 +26,32 @@ deb-src http://mirror.stusta.mhn.de/debian/ wheezy main contrib non-free
 
 deb http://mirror.stusta.mhn.de/debian/ wheezy-updates main contrib non-free
 deb-src http://mirror.stusta.mhn.de/debian/ wheezy-updates main contrib non-free
+
+
+deb http://security.debian.org/ wheezy/updates main contrib non-free
+deb-src http://security.debian.org/ wheezy/updates main contrib non-free
+
+deb http://http.debian.net/debian/ wheezy main contrib non-free
+deb-src http://http.debian.net/debian/ wheezy main contrib non-free
+
+deb http://http.debian.net/debian/ wheezy-updates main contrib non-free
+deb-src http://http.debian.net/debian/ wheezy-updates main contrib non-free
+EOF
+
+logMessage "${0}: Configuring apt proxy"
+cat > ${prefix}/etc/apt/apt.conf.d/30proxy <<EOF
+Acquire
+{
+  http {
+    Proxy "http://proxy.stusta.mhn.de:3128/";
+    Proxy::mirror.stusta.mhn.de "DIRECT";
+  }
+}
+EOF
+
+logMessage "${0}: Disabling auto install recommends"
+cat > ${prefix}/etc/apt/apt.conf.d/20recommends <<EOF
+APT::Install-Recommends "false";
 EOF
 
 chroot ${prefix} aptitude update

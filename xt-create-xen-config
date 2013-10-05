@@ -15,7 +15,7 @@ function generate_ssn_mac() {
 	maclist=$(find /etc/xen/ -maxdepth 1 -name "*.cfg" -exec egrep --only-matching "mac=[[:alnum:]:]{17}" {} \; | sed -e "s/mac=//g")
 	i=0
 	while [ ${i} -lt 100 ]; do
-		mac=$(echo -n 00-16-3E-${1}; dd bs=1 count=2 if=/dev/random 2>/dev/null |hexdump -v -e '/1 "-%02X"')
+		mac=$(echo -n 00:16:3E:${1}; dd bs=1 count=2 if=/dev/random 2>/dev/null |hexdump -v -e '/1 ":%02X"')
 		macisused=false
 		for usedmac in ${maclist}; do
 			[ ${usedmac} == ${mac} ] && macisused=true
@@ -42,4 +42,4 @@ fi
 export ipv6_prefix_ext="2001:4ca0:200:3:200:5efe"
 export ipv6_prefix_int="2001:4ca0:200:3:0:5efe"
 
-/usr/bin/xt-create-xen-config
+/usr/bin/xt-create-xen-config ${@}

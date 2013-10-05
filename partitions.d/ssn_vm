@@ -9,7 +9,7 @@ size=512M
 type=swap
 
 [var]
-size=1G
+size=2G
 type=ext4
 mountpoint=/var
 options=defaults,relatime

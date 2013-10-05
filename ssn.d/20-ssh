@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #  Passt die /etc/ssh/sshd_conf an
 #
@@ -50,7 +50,7 @@ editfiles:
           LocateLineMatching "^#* *PermitRootLogin.*$"
           InsertLine "PermitRootLogin no"
 
-          HashCommentLinesMatching ".*dsa_key$"
+          HashCommentLinesMatching ".*_dsa_key$"
           HashCommentLinesMatching "^KeyRegenerationInterval.*$"
           HashCommentLinesMatching "^ServerKeyBits.*$"
           HashCommentLinesMatching "^RSAAuthentication.*$"
@@ -68,6 +68,14 @@ editfiles:
           InsertLine ""
         }
 EOF
+
+
+# Generate stronger SSH-Host-Keys
+rm -f ${prefix}/etc/ssh/ssh_host_{dsa,ecdsa,rsa}_key{,.pub}
+
+ssh-keygen -t rsa   -b 4096 -f ${prefix}/etc/ssh/ssh_host_rsa_key   -N "" -C "root@${hostname}"
+ssh-keygen -t ecdsa -b 521  -f ${prefix}/etc/ssh/ssh_host_ecdsa_key -N "" -C "root@${hostname}"
+
 
 
 #

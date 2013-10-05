@@ -51,8 +51,11 @@ editfiles:
 		{
 			${prefix}/etc/apt/apt.conf.d/50unattended-upgrades
 			Backup "false"
-			LocateLineMatching "\s*//\s*Unattended-Upgrade::Mail.*"
-			InsertLine "Unattended-Upgrade::Mail \"root\";"
+
+			SetCommentStart "//"
+			UnCommentLinesMatching "^//\s*\"o=Debian,a=stable\";$"
+			UnCommentLinesMatching "^//\s*\"o=Debian,a=stable-updates\";$"
+			UnCommentLinesMatching "^//\s*Unattended-Upgrade::Mail \"root\";$"
 		}
 EOF
 

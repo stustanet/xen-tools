@@ -23,9 +23,7 @@ EOF
 
 logMessage Installing packages...
 
-disableStartStopDaemon ${prefix}
 installDebianPackage ${prefix} iptables lsb-base iptables-persistent
-enableStartStopDaemon ${prefix}
 
 logMessage Installing rules...
 
