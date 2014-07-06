@@ -4,8 +4,8 @@
 #
 #
 
-techvorstand1=005444
-techvorstand2=006589
+techvorstand1=006902
+techvorstand2=006619
 
 prefix=$1
 admins=${techvorstand1},${techvorstand2},$2
