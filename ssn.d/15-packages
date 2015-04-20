@@ -28,7 +28,7 @@ logMessage Installing/removing packages...
 #
 #  Install some new packages - do this first to avoid dependency errors.
 #
-installDebianPackage ${prefix} screen tmux tcpdump mc sudo vim htop locales-all rsync bash-completion zsh grub-xen aptitude
+installDebianPackage ${prefix} screen tmux tcpdump mc sudo vim htop locales-all rsync bash-completion zsh aptitude
 
 # set LANG
 echo "LANG=en_US.UTF-8" > ${prefix}/etc/default/locale
