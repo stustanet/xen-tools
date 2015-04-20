@@ -20,4 +20,4 @@ ftp_proxy="http://proxy.stusta.mhn.de:3128"
 no_proxy=".stusta.mhn.de"
 EOF
 
-logMessage "$0 finished setting mirrors "
+logMessage "$0 finished setting up /etc/environment "

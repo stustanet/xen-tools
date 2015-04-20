@@ -12,10 +12,10 @@ fi
 
 logMessage Installing firewall "($0)..."
 
-logMessage Preseeding debcinf for iptables-persistent
+logMessage Preseeding debconf for iptables-persistent
 
 # set debconf selections for iptables-persistent
-logMessage Configuring exim...
+logMessage Configuring iptables-persistent...
 chroot ${prefix} /usr/bin/debconf-set-selections <<EOF
 iptables-persistent	iptables-persistent/autosave_v6	boolean	false
 iptables-persistent	iptables-persistent/autosave_v4	boolean	false
