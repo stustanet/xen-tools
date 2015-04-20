@@ -53,8 +53,9 @@ editfiles:
 			Backup "false"
 
 			SetCommentStart "//"
-			UnCommentLinesMatching "^//\s*\"o=Debian,a=stable\";$"
-			UnCommentLinesMatching "^//\s*\"o=Debian,a=stable-updates\";$"
+			UnCommentLinesMatching "^//\s*\"o=Debian,n=jessie\";$"
+			UnCommentLinesMatching "^//\s*\"o=Debian,n=jessie-updates\";$"
+			UnCommentLinesMatching "^//\s*\"o=Debian,n=jessie,l=Debian-Security\";$"
 			UnCommentLinesMatching "^//\s*Unattended-Upgrade::Mail \"root\";$"
 		}
 EOF

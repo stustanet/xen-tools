@@ -20,21 +20,7 @@ EOF
 
 chroot ${prefix} /usr/bin/aptitude -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" --without-recommends install psutils vlan isatapd
 
-/usr/sbin/cfagent -K -f - <<EOF
-control:
-   any::
-   actionsequence = ( editfiles )
-   EditFileSize = ( 30000 )
-
-editfiles:
-   any::
-        { ${prefix}/etc/default/isatapd
-	  Backup "false"
-          HashCommentLinesMatching "^RUN=.*$"
-          LocateLineMatching "^#* *RUN=.*$"
-          InsertLine "RUN=\"no\""
-        }
-EOF
+chroot ${prefix} /bin/systemctl disable isatapd.service
 
 logMessage My IP is: ${ip1}
 
