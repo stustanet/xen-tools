@@ -54,6 +54,6 @@ cat > ${prefix}/etc/apt/apt.conf.d/20recommends <<EOF
 APT::Install-Recommends "false";
 EOF
 
-chroot ${prefix} aptitude update
+chroot ${prefix} apt-get update
 
 logMessage "$0 finished setting mirrors "

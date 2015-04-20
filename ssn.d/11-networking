@@ -18,7 +18,7 @@ nameserver 10.150.127.2
 nameserver 10.150.125.2
 EOF
 
-chroot ${prefix} /usr/bin/aptitude -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" --without-recommends install psutils vlan isatapd
+chroot ${prefix} /usr/bin/apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install psutils vlan isatapd
 
 chroot ${prefix} /bin/systemctl disable isatapd.service
 
