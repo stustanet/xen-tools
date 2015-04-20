@@ -6,34 +6,17 @@
 #
 #  Kernel + memory size
 #
-{ if ( ( $kernel ) && ( !defined($pygrub)) )
+{ if ( ( $kernel )
   {
     $OUT.= "kernel      = '$kernel'";
   }
 }
-{ if ( ( $initrd ) && ( !defined($pygrub)) )
+{ if ( ( $initrd )
   {
     $OUT.= "ramdisk     = '$initrd'";
   }
 }
-{
-  if ( $pygrub )
-  {
-    my $pygrub_bin = '';
-    foreach my $pygrub_path (reverse glob('/usr/lib/xen-*/bin/pygrub
-                                           /usr/lib/xen-default/bin/pygrub
-                                           /usr/*bin/pygrub')) {
-      if (-x $pygrub_path) {
-        $pygrub_bin = $pygrub_path;
-        last;
-      }
-    }
 
-    die "pygrub not found" unless $pygrub_bin;
-
-    $OUT .= "bootloader = '$pygrub_bin'\n";
-  }
-}
 vcpus       = '{$vcpus}'
 cpus        = '1-23'
 memory      = '{$memory}'
