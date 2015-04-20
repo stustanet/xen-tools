@@ -10,11 +10,6 @@ else
     echo "Installation problem"
 fi
 
-# install ntp
-logMessage Installing ntp...
-installDebianPackage ${prefix} ntp
-
-
 /usr/sbin/cfagent -K -f - <<EOF
 
 control:
@@ -24,15 +19,15 @@ control:
 
 editfiles:
    any::
-        { ${prefix}/etc/ntp.conf
+        { ${prefix}/etc/systemd/timesyncd.conf
 	  Backup "false"
-          HashCommentLinesMatching "^server.*"
-          LocateLineMatching "^# ?server .*"
-          InsertLine "server 10.150.127.2 iburst"
-          InsertLine "server 10.150.125.2 iburst"
+          LocateLineMatching "^#Servers=.*"
+          InsertLine "Servers=10.150.127.2 10.150.125.2"
         }
 EOF
 
+chroot ${prefix} /bin/systemctl enable systemd-timesyncd.service
 
-logMessage ntp done...
+
+logMessage systemd-timesyncd done...
 
