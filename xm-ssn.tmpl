@@ -6,14 +6,9 @@
 #
 #  Kernel + memory size
 #
-{ if ( ( $kernel )
+{ if ( $kernel )
   {
     $OUT.= "kernel      = '$kernel'";
-  }
-}
-{ if ( ( $initrd )
-  {
-    $OUT.= "ramdisk     = '$initrd'";
   }
 }
 
