@@ -73,8 +73,8 @@ EOF
 # Generate stronger SSH-Host-Keys
 rm -f ${prefix}/etc/ssh/ssh_host_{dsa,ecdsa,rsa}_key{,.pub}
 
-ssh-keygen -t rsa   -b 4096 -f ${prefix}/etc/ssh/ssh_host_rsa_key   -N "" -C "root@${hostname}"
-ssh-keygen -t ecdsa -b 521  -f ${prefix}/etc/ssh/ssh_host_ecdsa_key -N "" -C "root@${hostname}"
+ssh-keygen -t rsa   -b 4096 -f ${prefix}/etc/ssh/ssh_host_rsa_key     -N "" -C "root@${hostname}"
+ssh-keygen -t ed25519       -f ${prefix}/etc/ssh/ssh_host_ed25519_key -N "" -C "root@${hostname}"
 
 
 
