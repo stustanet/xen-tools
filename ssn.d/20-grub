@@ -13,18 +13,7 @@ prefix=$1
 
 logMessage "Starting $0"
 
-#
-#  Source our common functions - this will let us install a Debian package.
-#
-if [ -e /usr/share/xen-tools/common.sh ]; then
-    . /usr/share/xen-tools/common.sh
-else
-    echo "Installation problem in $0"
-fi
-
-logMessage Installing pvgrub...
-
-installDebianPackage ${prefix} grub-xen
+installDebianPackage ${prefix} grub2-common
 
 chroot ${prefix} /usr/sbin/update-grub
 
