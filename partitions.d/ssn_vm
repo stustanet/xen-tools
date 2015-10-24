@@ -2,7 +2,7 @@
 size=4G
 type=ext4
 mountpoint=/
-options=errors=remount-ro,relatime
+options=errors=remount-ro,relatime,discard
 
 [swap]
 size=512M
@@ -12,17 +12,17 @@ type=swap
 size=2G
 type=ext4
 mountpoint=/var
-options=defaults,relatime
+options=defaults,relatime,discard
 
 [var-log]
 size=1G
 type=ext4
 mountpoint=/var/log
-options=defaults,noatime
+options=defaults,noatime,discard
 
 [tmp]
 size=1G
 type=ext4
 mountpoint=/tmp
-options=defaults,relatime
+options=defaults,relatime,discard
 
