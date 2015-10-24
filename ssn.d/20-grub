@@ -15,6 +15,9 @@ logMessage "Starting $0"
 
 installDebianPackage ${prefix} grub2-common
 
-chroot ${prefix} /usr/sbin/update-grub
+cp /etc/xen-tools/files/make_ssn_grubentry ${prefix}/tmp/make_ssn_grubentry
+chroot ${prefix} /bin/mkdir -p /boot/grub
+cp /etc/xen-tools/files/grub.cfg.head ${prefix}/boot/grub/grub.cfg
+chroot ${prefix} /bin/bash /tmp/make_ssn_grubentry >> ${prefix}/boot/grub/grub.cfg
 
 logMessage "Done installing pvgrub by $0"
