@@ -76,7 +76,9 @@ rm -f ${prefix}/etc/ssh/ssh_host_{dsa,ecdsa,rsa,ed25519}_key{,.pub}
 ssh-keygen -t rsa   -b 4096 -f ${prefix}/etc/ssh/ssh_host_rsa_key     -N "" -C "root@${hostname}"
 ssh-keygen -t ed25519       -f ${prefix}/etc/ssh/ssh_host_ed25519_key -N "" -C "root@${hostname}"
 
-
+# Only keep strong ssh moduli
+awk '$5>2046' < ${prefix}/etc/ssh/moduli > ${prefix}/etc/ssh/moduli.new
+mv ${prefix}/etc/ssh/moduli.new ${prefix}/etc/ssh/moduli
 
 #
 #  Log our finish
