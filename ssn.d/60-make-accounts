@@ -4,8 +4,8 @@
 #
 #
 
-techvorstand1=006902
-techvorstand2=006619
+techvorstand1=006619
+techvorstand2=007638
 
 prefix=$1
 admins=${techvorstand1},${techvorstand2},$2
@@ -30,12 +30,10 @@ IFS=","
 for user in ${admins}; do
 	if [ -f "/etc/xen-tools/admin.d/${user}.key" -a -f "/etc/xen-tools/admin.d/${user}.pw" -a -f "/etc/xen-tools/admin.d/${user}.name" -a -f "/etc/xen-tools/admin.d/${user}.mail" ]; then
 		logMessage Script adding a${user}a...
-		chroot ${prefix} adduser --disabled-login --gecos "`cat /etc/xen-tools/admin.d/${user}.name`" a${user}a
-		chroot ${prefix} adduser a${user}a sudo
-		mkdir -m 700 ${prefix}/home/a${user}a/.ssh
+		chroot ${prefix} useradd  -p "`cat /etc/xen-tools/admin.d/${user}.pw`" -c "`cat /etc/xen-tools/admin.d/${user}.name`" a${user}a -m -ou 0
+        mkdir -m 700 ${prefix}/home/a${user}a/.ssh
 		install -m 644 /etc/xen-tools/admin.d/${user}.key ${prefix}/home/a${user}a/.ssh/authorized_keys
-		chroot ${prefix} chown -R a${user}a:a${user}a /home/a${user}a/.ssh
-		chroot ${prefix} usermod -p "`cat /etc/xen-tools/admin.d/${user}.pw`" a${user}a
+		chroot ${prefix} chown -R root:root /home/a${user}a/.ssh
 
 		if [ -s "/etc/xen-tools/admin.d/${user}.mail" -a ${user} != ${techvorstand1} -a ${user} != ${techvorstand2} ]; then
 		mail=`cat /etc/xen-tools/admin.d/${user}.mail`
