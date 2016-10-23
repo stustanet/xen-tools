@@ -27,15 +27,8 @@ deb-src http://mirror.stusta.mhn.de/debian/ jessie main contrib non-free
 deb http://mirror.stusta.mhn.de/debian/ jessie-updates main contrib non-free
 deb-src http://mirror.stusta.mhn.de/debian/ jessie-updates main contrib non-free
 
-
 deb http://security.debian.org/ jessie/updates main contrib non-free
 deb-src http://security.debian.org/ jessie/updates main contrib non-free
-
-deb http://ftp.de.debian.org/debian/ jessie main contrib non-free
-deb-src http://ftp.de.debian.org/debian/ jessie main contrib non-free
-
-deb http://ftp.de.debian.org/debian/ jessie-updates main contrib non-free
-deb-src http://ftp.de.debian.org/debian/ jessie-updates main contrib non-free
 EOF
 
 logMessage "${0}: Configuring apt proxy"
