@@ -48,7 +48,7 @@ editfiles:
 
 	  HashCommentLinesMatching "^PermitRootLogin.*$"
           LocateLineMatching "^#* *PermitRootLogin.*$"
-          InsertLine "PermitRootLogin no"
+          InsertLine "PermitRootLogin without-password"
 
           HashCommentLinesMatching ".*_dsa_key$"
           HashCommentLinesMatching "^KeyRegenerationInterval.*$"
