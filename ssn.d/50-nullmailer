@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+
+prefix=$1
+
+# source common functions
+if [ -e /usr/share/xen-tools/common.sh ]; then
+    . /usr/share/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+# get hostname
+hostname=$(cat ${prefix}/etc/hostname)
+
+logMessage Hostname is \"${hostname}\"
+
+# install nullmailer
+logMessage Installing nullmailer...
+installDebianPackage ${prefix} nullmailer
+
+logMessage Nullmailer done...
