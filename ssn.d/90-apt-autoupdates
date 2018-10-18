@@ -55,7 +55,6 @@ editfiles:
 			SetCommentStart "//"
 			UnCommentLinesMatching "^//\s*\"o=Debian,a=stable\";$"
 			UnCommentLinesMatching "^//\s*\"o=Debian,n=stable-updates\";$"
-			UnCommentLinesMatching "^//\s*\"o=Debian,n=jessie,l=Debian-Security\";$"
 			UnCommentLinesMatching "^//\s*Unattended-Upgrade::Mail \"root\";$"
 		}
 EOF
