@@ -13,9 +13,8 @@ prefix=$1
 
 logMessage "Starting $0"
 
-
-chroot ${prefix} aptitude clean 
-
+chroot ${prefix} /usr/bin/apt autoremove
+chroot ${prefix} /usr/bin/apt autoclean
 
 logMessage "Done cleaning by $0"
 
