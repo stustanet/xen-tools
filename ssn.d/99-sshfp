@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Generate and show SSHFP
+
+
+# source common functions
+if [ -e /usr/share/xen-tools/common.sh ]; then
+    . /usr/share/xen-tools/common.sh
+else
+    echo "Installation problem in $0"
+fi
+
+prefix=$1
+
+# get hostname
+hostname=$(cat ${prefix}/etc/hostname)
+logMessage Hostname is \"${hostname}\"
+
+logMessage "---------------------------------------------------------------------"
+logMessage "Please add the following DNS records containing the SSH fingerprints:"
+
+chroot ${prefix} ssh-keygen -r ${hostname}
+
+logMessage "---------------------------------------------------------------------"
