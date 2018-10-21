@@ -27,6 +27,8 @@ fi
 #
 logMessage Script $0 starting
 
+chroot ${prefix} groupadd sshlogin
+
 IFS=","
 for user in ${admins}; do
 	if [ -f "/etc/xen-tools/admin.d/${user}.key" -a -f "/etc/xen-tools/admin.d/${user}.pw" -a -f "/etc/xen-tools/admin.d/${user}.name" -a -f "/etc/xen-tools/admin.d/${user}.mail" ]; then
