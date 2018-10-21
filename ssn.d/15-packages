@@ -17,7 +17,7 @@ logMessage "Starting $0"
 # Install some new packages - do this first to avoid dependency errors.
 
 # basics
-installDebianPackage ${prefix} python openssl ca-certificates
+installDebianPackage ${prefix} python openssl ca-certificates libpam-systemd
 
 # we like kernel updates
 installDebianPackage ${prefix} linux-image-amd64
